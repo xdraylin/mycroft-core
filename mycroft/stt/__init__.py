@@ -18,6 +18,8 @@ from abc import ABCMeta, abstractmethod
 from requests import post
 from speech_recognition import Recognizer
 
+import base64
+
 from mycroft.api import STTApi
 from mycroft.configuration import Configuration
 from mycroft.util.log import LOG
@@ -141,7 +143,19 @@ class KaldiSTT(STT):
         except:
             return None
 
-
+class GenericHttpSTT(STT):
+    def __init__(self):
+        super(GenericHttpSTT, self).__init__()
+    def execute(self, audio, language=Node):
+        response = post(self.config.get("uri"), data=base64.b32encode(audio.get_wav_data()))
+        return self.get_response(response)
+    
+    def get_response(self, response):
+        try:
+            return re
+        except:
+            return None        
+        
 class STTFactory(object):
     CLASSES = {
         "mycroft": MycroftSTT,
@@ -150,6 +164,7 @@ class STTFactory(object):
         "wit": WITSTT,
         "ibm": IBMSTT,
         "kaldi": KaldiSTT
+        "HTTP": GenericHttpSTT
     }
 
     @staticmethod
