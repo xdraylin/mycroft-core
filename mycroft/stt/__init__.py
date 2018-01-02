@@ -152,7 +152,7 @@ class GenericHttpSTT(STT):
     
     def get_response(self, response):
         try:
-            return re
+            return response
         except:
             return None        
         
